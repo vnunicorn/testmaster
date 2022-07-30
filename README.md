@@ -77,3 +77,9 @@ mysql -u admin -p (enter)
     - db crud for user
 ## add testing domain apis
     they're showed in doc repository
+
+
+# Edit DB
+To Edit the DB schema:  
+* Go to https://dbdiagram.io 
+* Import file `Test Manager's DB Schema.sql` in directory `db`
