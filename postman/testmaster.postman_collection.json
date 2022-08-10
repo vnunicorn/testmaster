@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "dae76cca-f202-4776-88b9-6b9537907def",
+		"name": "testmaster",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3065982"
+	},
+	"item": [
+		{
+			"name": "create user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"username\":\"testmaster_demo\",\n\"password\":\"abc123\",\n\"mobile\":\"0955002213\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3008/users?username=test_b&password=abc123",
+					"host": [
+						"localhost"
+					],
+					"port": "3008",
+					"path": [
+						"users"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "test_b"
+						},
+						{
+							"key": "password",
+							"value": "abc123"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
