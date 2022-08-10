@@ -12,11 +12,11 @@ var db *sql.DB
 
 func InitDb() {
 	cfg := mysql.Config{
-		User:   "vod",    // Set Username Here
-		Passwd: "abc123", // Set Password Here
+		User:   "root",       // Set Username Here
+		Passwd: "testmaster", // Set Password Here
 		Net:    "tcp",
-		Addr:   "127.0.0.1:3306",
-		DBName: "vod", // Set Database Name Here
+		Addr:   "127.0.0.1:3308",
+		DBName: "testmaster", // Set Database Name Here
 	}
 	// Get a database handle.
 	var err error
