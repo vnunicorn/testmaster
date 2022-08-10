@@ -1,10 +1,13 @@
 package user_service
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
+	"github.com/golang/glog"
 	"github.com/labstack/echo/v4"
+	"github.com/vnunicorn/testmaster/internal/database"
 )
 
 type (
@@ -24,14 +27,15 @@ var (
 //---------
 
 func CreateUser(c echo.Context) error {
-	u := &user{
-		ID: seq,
+	u := &database.User{
+		Username: c.FormValue("username"),
+		Password: c.FormValue("password"),
 	}
-	if err := c.Bind(u); err != nil {
-		return err
+	id, err := database.AddUser(u)
+	if err != nil {
+		glog.Error("err : %v", err)
 	}
-	users[u.ID] = u
-	seq++
+	log.Printf("created user, id = %d", id)
 	return c.JSON(http.StatusCreated, u)
 }
 

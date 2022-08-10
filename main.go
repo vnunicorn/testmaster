@@ -19,5 +19,5 @@ func main() {
 	e.DELETE("/users/:id", user_service.DeleteUser)
 
 	// Start server at localhost:3000
-	e.Logger.Fatal(e.Start(":3000"))
+	e.Logger.Fatal(e.Start(":3008"))
 }
