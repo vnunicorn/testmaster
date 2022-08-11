@@ -15,9 +15,10 @@ func main() {
 	// Routes
 	e.POST("/users", user_service.CreateUser)
 	e.GET("/users/:id", user_service.GetUser)
+	e.GET("/users", user_service.GetUsers)
 	e.PUT("/users/:id", user_service.UpdateUser)
 	e.DELETE("/users/:id", user_service.DeleteUser)
 
-	// Start server at localhost:3000
+	// Start server at localhost:3008
 	e.Logger.Fatal(e.Start(":3008"))
 }

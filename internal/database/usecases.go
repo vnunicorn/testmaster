@@ -44,6 +44,7 @@ type User struct {
 	Last_name   string
 }
 
+//thêm mới user
 func AddUser(user *User) (int64, error) {
 	sql := fmt.Sprintf("INSERT INTO testmaster.users(username, mobile, email, password, first_name, middle_name, last_name) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
 		user.Username, user.Mobile, user.Email, user.Password, user.First_name, user.Middle_name, user.Last_name)
@@ -62,4 +63,62 @@ func AddUser(user *User) (int64, error) {
 	fmt.Printf("The last inserted row id: %d\n", lastId)
 
 	return lastId, err
+}
+
+// lấy ra tất cả user
+func GetAllUsers() ([]User, error) {
+	var sliceUsers []User
+	result, err := db.Query("SELECT * FROM testmaster.users ORDER BY id DESC")
+	if err != nil {
+		panic(err.Error())
+	}
+	for result.Next() {
+		var u User
+		_ = result.Scan(&u.Username, &u.Mobile, &u.Email, &u.Password, &u.First_name, &u.Middle_name, &u.Last_name)
+		sliceUsers = append(sliceUsers, u)
+	}
+	return sliceUsers, err
+}
+
+// lấy User theo id
+func GetUserByID(id string) (User, error) {
+
+	getDB, err := db.Query("SELECT * FROM testmaster.users WHERE id = ?", id)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var u User
+	fmt.Println(getDB.Columns())
+	_ = getDB.Scan(&u.Username, &u.Mobile, &u.Email, &u.Password, &u.First_name, &u.Middle_name, &u.Last_name)
+
+	fmt.Printf("Select username by id: %s\n", id)
+
+	return u, err
+
+}
+
+//Update user by id
+func UpdateUserByID(user *User, id string) error {
+
+	res, err := db.Prepare("UPDATE testmaster.users SET username=?, mobile=?, email=?, password id=?, first_name=?,middle_name=?, last_name=? WHERE id=?")
+	if err != nil {
+		panic(err.Error())
+	}
+	res.Exec(user.Username, user.Mobile, user.Email, user.Password, user.First_name, user.Middle_name, user.Last_name, id)
+	fmt.Printf("Update username by id successfully")
+	return err
+
+}
+
+//Delete user by id
+func DeleteUserById(id string) error {
+	res, err := db.Prepare("DELETE FROM testmaster.users WHERE id=?")
+	if err != nil {
+		panic(err)
+	}
+	res.Exec(id)
+	fmt.Printf("Delete username by id successfully")
+	return nil
 }
