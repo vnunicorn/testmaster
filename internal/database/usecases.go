@@ -35,13 +35,13 @@ func InitDb() {
 }
 
 type User struct {
-	Username    string
-	Mobile      string
-	Email       string
-	Password    string
-	First_name  string
-	Middle_name string
-	Last_name   string
+	Username    string `json:"username,omitempty"`
+	Mobile      string `json:"mobile,omitempty"`
+	Email       string `json:"email,omitempty"`
+	Password    string `json:"password,omitempty"`
+	First_name  string `json:"first_name,omitempty"`
+	Middle_name string `json:"middle_name,omitempty"`
+	Last_name   string `json:"last_name,omitempty"`
 }
 
 //thêm mới user
@@ -68,7 +68,7 @@ func AddUser(user *User) (int64, error) {
 // lấy ra tất cả user
 func GetAllUsers() ([]User, error) {
 	var sliceUsers []User
-	result, err := db.Query("SELECT * FROM testmaster.users ORDER BY id DESC")
+	result, err := db.Query("SELECT username, mobile, email, password, first_name, middle_name, last_name FROM testmaster.users ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -82,19 +82,14 @@ func GetAllUsers() ([]User, error) {
 
 // lấy User theo id
 func GetUserByID(id string) (User, error) {
-
-	getDB, err := db.Query("SELECT * FROM testmaster.users WHERE id = ?", id)
-
+	getDB, err := db.Query("SELECT username, mobile, email, password, first_name, middle_name, last_name FROM testmaster.users WHERE id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
-
 	var u User
-	fmt.Println(getDB.Columns())
-	_ = getDB.Scan(&u.Username, &u.Mobile, &u.Email, &u.Password, &u.First_name, &u.Middle_name, &u.Last_name)
-
+	fmt.Println(getDB.Next())
+	err = getDB.Scan(&u.Username, &u.Mobile, &u.Email, &u.Password, &u.First_name, &u.Middle_name, &u.Last_name)
 	fmt.Printf("Select username by id: %s\n", id)
-
 	return u, err
 
 }
@@ -102,14 +97,13 @@ func GetUserByID(id string) (User, error) {
 //Update user by id
 func UpdateUserByID(user *User, id string) error {
 
-	res, err := db.Prepare("UPDATE testmaster.users SET username=?, mobile=?, email=?, password id=?, first_name=?,middle_name=?, last_name=? WHERE id=?")
+	res, err := db.Prepare("UPDATE testmaster.users SET username=?, mobile=?, email=?, password =?, first_name=?,middle_name=?, last_name=? WHERE id=?")
 	if err != nil {
 		panic(err.Error())
 	}
 	res.Exec(user.Username, user.Mobile, user.Email, user.Password, user.First_name, user.Middle_name, user.Last_name, id)
 	fmt.Printf("Update username by id successfully")
 	return err
-
 }
 
 //Delete user by id

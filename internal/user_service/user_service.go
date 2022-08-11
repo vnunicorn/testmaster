@@ -21,6 +21,7 @@ type (
 //---------
 
 func CreateUser(c echo.Context) error {
+
 	u := &database.User{
 		Username: c.FormValue("username"),
 		Password: c.FormValue("password"),
@@ -66,7 +67,10 @@ func UpdateUser(c echo.Context) error {
 
 func DeleteUser(c echo.Context) error {
 	id := c.Param("id")
-	database.DeleteUserById(id)
+	err := database.DeleteUserById(id)
+	if err != nil {
+		panic(err.Error())
+	}
 	return c.NoContent(http.StatusNoContent)
 }
 
